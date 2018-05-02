@@ -1,6 +1,3 @@
-/*chiedi all'utente quanti elementi inserire, poi mettili in
-una lista ordinata e stampa*/
-
 #include <stdio.h>
 #include <stdlib.h>
 
