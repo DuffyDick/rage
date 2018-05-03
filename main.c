@@ -1,67 +1,50 @@
+
 #include <stdio.h>
 #include <stdlib.h>
-struct nodo{
-  int info;
-  struct nodo *next;
-};
+#define max 100
 
-struct nodo *crea_lista(){
-  return NULL;
-};
-
-int leggi_info(struct nodo *lista){
-  int info=0;
-  printf("Inserire valore: ");
-  scanf("%d",&info);
-  return info;
-  };
-
-struct nodo *ordina_lista(struct nodo *lista,int info){
-  struct nodo *prev,*curr,*newnode;
-  prev=NULL;
-  curr=lista;
-  while(curr != NULL && info > curr->info){
-    prev=curr;
-    curr=curr->next;
+int riempi_array (int array[]){
+  int dim=0;
+  printf("Quanti elementi vuoi inserire? ");
+  scanf("%d",&dim);
+  for (int i=0;i<dim;i++){
+    printf("Inserire %d elemento: ",i+1 );
+    scanf("%d",&array[i]);
   }
-  newnode=(struct nodo *)malloc(sizeof(struct nodo));
-  newnode->info=info;
+  return dim;
+}
 
-  if (prev==NULL){
-    newnode->next=lista;
-    lista=newnode;
-    return lista;
-  }else{
-    prev->next=newnode;
-    newnode->next=curr;
-    return lista;
+void stampa_array (int array[],int dim){
+  for (int i=0;i<dim;i++){
+    printf("Elemento %d: %d\n",i+1,array[i]);
   }
 }
 
-void stampa_lista(struct nodo *lista){
-  struct nodo *p;
-  p=lista;
-  printf("START-> ");
-  while (p!=NULL){
-    printf("%d-> ",p->info);
-    p=p->next;
+int calcola_minimo (int array[],int dim){
+  int min;
+  dim--;
+  if (dim==0){
+    return array[0];
   }
-  printf("NULL");
+  else{
+    min=calcola_minimo(array,dim);
+  }
+  if (array[dim]<min){
+    return array[dim];
+  }
+  else{
+    return min;
+  }
 }
+
 
 int main(){
-    struct nodo *lista;
-    int dim=0,i=0;
-    int info=0;
-    lista=crea_lista();
-    printf("Quanti elementi vuoi inserire? ");
-    scanf("%d",&dim);
-    for (i=0;i<dim;i++){
-      info=leggi_info(lista);
-      lista=ordina_lista(lista,info);
-    }
-    printf("\n");
-    stampa_lista(lista);
-    printf("\n");
-    return 0;
+  int array[max];
+  int dim=0,min=0;
+  dim=riempi_array(array);
+  stampa_array(array,dim);
+  min=calcola_minimo(array,dim);
+  printf("Il minimo e':%d\n",min);
+
+  return 0;
 }
