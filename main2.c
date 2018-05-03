@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 struct nodo{
   int info;
   struct nodo *next;
