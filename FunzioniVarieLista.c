@@ -55,7 +55,7 @@ struct nodo *cancella_elemento(struct nodo *top){
 };
 
 
-void ordina_lista(struct nodo *top)
+void Sorting(struct nodo *top)
 {
     int flag,tmp;
     struct nodo *curr;
@@ -94,6 +94,24 @@ void visualizza_lista(struct nodo *lista){
   printf("\n");
 }
 
+void elimina_duplicati(struct nodo *top){
+  struct nodo *p,*p2,*dup;
+  p = top;
+
+  while(p != NULL && p -> next != NULL){
+
+    p2 = p;
+    while (p2 -> next != NULL){
+      if (p -> x == p2 -> next -> x){
+        dup = p2 -> next;
+        p2 -> next = p2 -> next -> next;
+        free(dup);
+      }else
+        p2 = p2 -> next;
+    }
+    p = p -> next;
+  }
+}
 
 int main(){
   struct nodo *top;
@@ -108,7 +126,7 @@ int main(){
   printf("\nlista normale:\n");
   visualizza_lista(top);
   printf("\nlista ordinata:\n");
-  ordina_lista(top);
+  Sorting(top);
   visualizza_lista(top);
   printf("\nlista con elemento eliminato:\n");
   cancella_elemento(top);
