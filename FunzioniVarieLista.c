@@ -94,24 +94,25 @@ void visualizza_lista(struct nodo *lista){
   printf("\n");
 }
 
-void elimina_duplicati(struct nodo *top){
-  struct nodo *p,*p2,*dup;
-  p = top;
 
-  while(p != NULL && p -> next != NULL){
-
-    p2 = p;
-    while (p2 -> next != NULL){
-      if (p -> x == p2 -> next -> x){
-        dup = p2 -> next;
-        p2 -> next = p2 -> next -> next;
-        free(dup);
-      }else
-        p2 = p2 -> next;
+struct nodo *elimina_duplicati(struct nodo *top){
+  struct nodo *curr = top, *now = top, *tmp;
+  while (now != NULL){
+    while( curr -> next != NULL){
+      if (now -> info == curr -> next -> info){
+        tmp = curr -> next;
+        curr -> next = curr -> next -> next;
+        free(tmp);
+      }else{
+        curr = curr -> next;
+      }
     }
-    p = p -> next;
+    now = now -> next;
+    curr = now;
   }
+  return top;
 }
+
 
 int main(){
   struct nodo *top;
