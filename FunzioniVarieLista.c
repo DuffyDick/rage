@@ -113,6 +113,29 @@ struct nodo *elimina_duplicati(struct nodo *top){
   return top;
 }
 
+struct nodo *alterna_elementi_due_liste_r(struct nodo *l1,struct nodo *l2){
+  struct nodo *l3,*tmp;
+  tmp = malloc(sizeof(struct nodo));
+  l3 = malloc(sizeof(struct nodo));
+
+  if (l1 != NULL && l2 != NULL){
+    l3 -> next = tmp;
+    l3 -> info = l1 -> info;
+    tmp -> info = l2 -> info;
+    tmp -> next = fondi(l1-> next , l2 -> next);
+  }else if (l1 != NULL){
+    l3 -> next = fondi(l1 -> next, l2);
+    l3 -> info =  l1 -> info;
+  }else if (l2 != NULL){
+    l3 -> next = fondi(l1, l2 -> next);
+    l3 -> info = l2 -> info;
+  }else
+    return NULL;
+
+
+  return l3;
+}
+
 
 int main(){
   struct nodo *top;
