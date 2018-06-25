@@ -1,0 +1,188 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct nodo{
+  int info;
+  struct nodo *next;
+};
+
+
+struct nodo *inserisci(struct nodo *top, int info){
+  struct nodo *prev = NULL, *curr = top, *new;
+  while (curr != NULL){
+    prev = curr;
+    curr = curr -> next;
+  }
+  new = malloc(sizeof(struct nodo ));
+  new -> info = info;
+
+  if (prev == NULL){
+    new -> next = top;
+    top = new;
+    return top;
+  }else{
+    prev -> next = new;
+    new -> next = curr;
+    return top;
+  }
+}
+
+
+struct nodo *elimina_duplicati(struct nodo *top){
+    struct nodo *new = top, *curr = top, *tmp;
+    while (new != NULL){
+      while (curr -> next != NULL){
+        if (new -> info == curr -> next -> info){
+          tmp = curr -> next;
+          curr -> next = curr -> next -> next;
+          free(tmp);
+        }else{
+          curr = curr -> next;
+        }
+      }
+      new = new -> next;
+      curr = new;
+    }
+    return top;
+}
+
+
+void Bubble_Sort(struct nodo *top){
+  int tmp,flag;
+  struct nodo *curr = top;
+  do{
+    flag = 0;
+    curr = top;
+    while (curr -> next != NULL){
+      if (curr -> info > curr -> next -> info){
+        tmp = curr -> info;
+        curr -> info = curr -> next -> info;
+        curr -> next -> info = tmp;
+        flag = 1;
+      }else
+        curr = curr -> next;
+    }
+  }while(flag);
+}
+
+
+struct nodo *elimina(struct nodo *top,int info){
+    struct nodo *prev, *curr = top;
+    while (curr != NULL && curr -> info == info){
+      prev = curr;
+      curr = curr -> next;
+      free(prev);
+    }
+    top = curr;
+
+    if (top != NULL){
+      prev = curr;
+      curr = curr -> next;
+      while (curr != NULL){
+        if (curr -> info == info){
+          prev -> next = curr -> next;
+          free(curr);
+          curr = prev -> next;
+        }else{
+          prev = curr;
+          curr = curr -> next;
+        }
+      }
+    }
+    return top;
+}
+
+
+struct nodo *clona(struct nodo *top){
+  struct nodo *new;
+  while (top != NULL){
+    new = inserisci(new,top->info);
+    top = top -> next;
+  }
+  return new;
+}
+
+
+struct nodo *unione_ordinata(struct nodo *l1,struct nodo *l2){
+  struct nodo *l3;
+  if (l1 == NULL)
+    return l2;
+  if (l2 == NULL)
+    return l1;
+
+  if (l1 -> info < l2 -> info){
+    l3 = l1;
+    l3 -> next = unione_ordinata(l1 -> next, l2);
+  }else{
+    l3 = l2;
+    l3 -> next = unione_ordinata(l1 , l2 -> next);
+  }
+  return l3;
+}
+
+
+struct nodo *inserisci_in_testa(struct nodo *top, int info){
+  struct nodo *new = NULL;
+  new = malloc(sizeof(struct nodo));
+  new -> info = info;
+  new -> next = top;
+  top = new;
+  return top;
+}
+
+
+struct nodo *inverti(struct nodo *top){
+  struct nodo *top2 = NULL;
+    while (top != NULL){
+      top2 = inserisci_in_testa(top2,top -> info);
+      top = top -> next;
+    }
+    return top2;
+}
+
+
+void visualizza(struct nodo *top){
+  printf("START -> ");
+  while(top != NULL){
+    printf("%d -> ",top -> info);
+    top = top -> next;
+  }
+  printf("END\n");
+}
+
+
+int main(){
+  struct nodo *top = NULL,*top2 = NULL,*top3 = NULL;
+  int info;
+  scanf("%d",&info);
+  while (!feof(stdin)){
+    top = inserisci(top,info);
+    scanf("%d",&info);
+  }
+  printf("Lista: ");
+  visualizza(top);
+  printf("Lista senza duplicati: ");
+  top = elimina_duplicati(top);
+  visualizza(top);
+  printf("Lista ordinata: ");
+  Bubble_Sort(top);
+  visualizza(top);
+  printf("Quale elemento si desidera cancellare? ");
+  scanf("%d",&info);
+  top = elimina(top,info);
+  printf("Lista con elemento cancellato: ");
+  visualizza(top);
+  printf("Lista 2 clone della lista 1: \n");
+  printf("lista 1: ");
+  visualizza(top);
+  top2 = clona(top);
+  printf("Lista 2: ");
+  visualizza(top2);
+  printf("2 liste unite in una nuova lista ordinata: \n");
+  top3 = unione_ordinata(top,top2);
+  visualizza(top3);
+  printf("Lista invertita e con i duplicati eliminati: \n");
+  top3 = inverti(top3);
+  top3 = elimina_duplicati(top3);
+  visualizza(top3);
+}
