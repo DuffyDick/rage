@@ -83,20 +83,24 @@ void Sorting(struct nodo *top)
 
 
 struct nodo *elimina_max_scorrendo_una_sola_volta(struct nodo *top){
-    struct nodo *prev = NULL, *curr = top,*mass,*precedente,*successivo;
-    int max = 0;
-    while (curr != NULL){
-      if (curr -> info > max){
-        max = curr -> info;
-        precedente = prev;
-        mass = curr;
-        successivo = curr -> next;
-      }
+   struct nodo *prev = NULL,*curr = top,*succ,*precedente,*mass;
+  int max = 0;
+  while (curr != NULL){
+    if (curr -> info > max){
+      max = curr -> info;
+      precedente = prev;
+      mass = curr;
+      succ = curr -> next;
+    }
       prev = curr;
       curr = curr -> next;
-    }
-    free(mass);
-    precedente -> next = successivo;
+  }
+  free(mass);
+  if (precedente == NULL)
+    top = succ;
+  else
+    precedente -> next = succ;
+  return top;
 }
 
 
